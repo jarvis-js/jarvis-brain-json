@@ -1,0 +1,25 @@
+{
+  "name": "jarvis-brain-json",
+  "version": "0.1.0",
+  "description": "JSON brain for Jarvis",
+  "main": "index.js",
+  "dependencies": {
+    "extend": "~1.1.3",
+    "mkdirp": "~0.3.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/alexwhitman/jarvis-brain-json.git"
+  },
+  "keywords": [
+    "Jarvis",
+    "Brain",
+    "JSON"
+  ],
+  "author": "Alex Whitman <alex@alexwhitman.com>",
+  "license": "BSD"
+}
