@@ -81,7 +81,6 @@ JSONBrain.prototype.forget = function forget(key, callback) {
 };
 
 JSONBrain.prototype.save = function save(key, callback) {
-	console.log(this.config.directory + '/' + key + '.json');
 	fs.writeFile(this.config.directory + '/' + key + '.json', JSON.stringify(this.data[key]), 'utf8', function() {
 		if (typeof callback === 'function') {
 			callback();
