@@ -3,6 +3,7 @@
 var fs   = require('fs');
 var path = require('path');
 
+var async  = require('async');
 var extend = require('extend');
 var mkdirp = require('mkdirp');
 
@@ -26,6 +27,16 @@ function JSONBrain(config) {
 	});
 
 	this.data = {};
+
+	this.writeQueue = async.queue(function(key, callback) {
+		var filePath = self.config.directory + '/' + key + '.json';
+		var data = JSON.stringify(self.data[key]);
+		fs.writeFile(filePath, data, 'utf8', function() {
+			if (typeof callback === 'function') {
+				callback();
+			}
+		});
+	}, 1);
 }
 
 module.exports = JSONBrain;
@@ -81,17 +92,15 @@ JSONBrain.prototype.forget = function forget(key, callback) {
 };
 
 JSONBrain.prototype.save = function save(key, callback) {
-	fs.writeFile(this.config.directory + '/' + key + '.json', JSON.stringify(this.data[key]), 'utf8', function() {
-		if (typeof callback === 'function') {
-			callback();
-		}
-	});
+	this.writeQueue.push(key, callback);
 };
 
 JSONBrain.prototype.load = function load(key, callback) {
 	var self = this;
 
-	fs.readFile(this.config.directory + '/' + key + '.json', 'utf8', function(error, data) {
+	var filePath = this.config.directory + '/' + key + '.json';
+
+	fs.readFile(filePath, 'utf8', function(error, data) {
 		try {
 			self.data[key] = JSON.parse(data);
 		}
